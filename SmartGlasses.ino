@@ -91,7 +91,6 @@ const unsigned int PLAY_PAUSE = 0xFFFE;
 const unsigned int STOP = 0xFFFF;
 long lastBeaconChecking;
 
-int i = 0;
 int lastBeaconDetected = -1;
 
 void setup() {
@@ -128,11 +127,21 @@ void loop() {
   byte buflen = VW_MAX_MESSAGE_LEN;  
   if( vw_get_message(buf, &buflen) )
   {
-    int beacon = buf[i]-65;
+    if (debugMode == 1) {
+      Serial.print("Mensagem recebida via radio (entre colchetes): [");
+      for (int j=0; j < buflen; j++) {
+        Serial.print(buf[j]);
+      }
+      Serial.println("] ");
+    }
+    int beacon = buf[0]-65;
     if (beacon < 0 || beacon >59) {
-      Serial.print("invalid beacon detected: "); Serial.println((char)(beacon+65));
+      if (debugMode == 1) {
+        Serial.print("invalid beacon detected:  numero "); Serial.println(beacon);
+      }  
+      
     } else {
-      if (debugMode == 0) {
+      if (debugMode == 1) {
         Serial.print("beacon detected: "); Serial.println(landmarks[beacon]);
         beaconOcurrences[beacon]++;
       }
@@ -140,17 +149,17 @@ void loop() {
       if ((millis()-lastBeaconChecking) > 500) {
          int maxVal = 0;
          int maxIndex = 0;
-         for(int i = 0; i < NBEACONS; i++) {
-           if(beaconOcurrences[i] > maxVal) {
-             maxVal = beaconOcurrences[i];
-             maxIndex = i;
+         for(int k = 0; k < NBEACONS; k++) {
+           if(beaconOcurrences[k] > maxVal) {
+             maxVal = beaconOcurrences[k];
+             maxIndex = k;
            }
-           beaconOcurrences[i] = 0;
+           beaconOcurrences[k] = 0;
          }
-         sendCommand(beacons[i]);
-         delay(delays[i]);
+         sendCommand(beacons[maxIndex]);
+         delay(delays[maxIndex]);
          sendCommand(STOP);
-         delay(1000);
+         delay(500);
          lastBeaconChecking = millis();
       }  
     }
