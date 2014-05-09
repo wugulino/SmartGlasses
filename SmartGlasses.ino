@@ -1,6 +1,6 @@
 // Biblioteca para uso do Receptor RF
 #include <VirtualWire.h>
-#define NBEACONS 15
+#define NBEACONS 59
 
 const int clockPin = 6;  // the pin number of the clock pin
 const int dataPin = 9;   // the pin number of the dataPin pin
@@ -25,7 +25,7 @@ int delays[]  = {20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000, 
                  20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000,
                  20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000}; //59 
                  
-String[] landMark = {"Ida Sala 117c", //1
+char * landmarks[] = {"Ida Sala 117c", //1
                   "Sala 117b", //2
                   "Sala 117a", //3
                   "Sala 115",  //4
@@ -130,10 +130,10 @@ void loop() {
   {
     int beacon = buf[i]-65;
     if (beacon < 0 || beacon >59) {
-      Serial.print("invalid beacon detected: "); Serial.println((char)+(beacon+65));
+      Serial.print("invalid beacon detected: "); Serial.println((char)(beacon+65));
     } else {
       if (debugMode == 0) {
-        Serial.print("beacon detected: "); Serial.println(beacon+1);
+        Serial.print("beacon detected: "); Serial.println(landmarks[beacon]);
         beaconOcurrences[beacon]++;
       }
       // each 500 milliseconds it checks what's the most frequent beacon
