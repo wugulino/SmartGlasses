@@ -117,7 +117,7 @@ void setup() {
   delay(10);
   digitalWrite(resetPin, HIGH);
   delay(600);
-
+  
   sendCommand(VOLUME_7);
   lastBeaconChecking = millis();
 }
