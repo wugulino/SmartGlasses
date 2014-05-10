@@ -157,7 +157,7 @@ void loop() {
         beaconOcurrences[beacon]++;
       }
       // each 500 milliseconds it checks what's the most frequent beacon
-      if ((millis()-lastBeaconChecking) > 500) {
+      if ((millis()-lastBeaconChecking) > 200) {
         int maxVal = 0;
         int maxIndex = 0;
         for(int k = 0; k < NBEACONS; k++) {
