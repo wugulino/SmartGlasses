@@ -101,6 +101,8 @@ boolean tocou = false;
 
 int lastBeaconDetected = -1;
 
+SoftwareSerial mySerial(8, 10); // RX, TX  -- 8 = arduino-rx  --- 10 = arduino-tx
+
 void setup() {
   Serial.begin(9600);
 
